@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const board = document.getElementById('game-board');
     const scoreDisplay = document.getElementById('score');
+    const newGameButton = document.querySelector('button');
     let score = 0;
     let grid = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => 0));
 
@@ -20,8 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             grid[row][col] = Math.random() < 0.9 ? 2 : 4;
             updateBoard();
         } else {
-            // Game over logic
-            console.log("Game Over!");
+            showGameOver();
         }
     }
 
@@ -49,6 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
         generateNumber();
     }
 
+    // Show "Game Over" message
+    function showGameOver() {
+        const gameOver = confirm("Game Over! Your score is " + score + ". Do you want to play again?");
+        if (gameOver) {
+            resetGame();
+        }
+    }
+
     // Handle keyboard inputs for moving tiles
     document.addEventListener('keydown', (event) => {
         if (!isGameOver()) {
@@ -70,10 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (moved) {
                 generateNumber();
                 updateBoard();
-                if (isGameOver()) {
-                    console.log("Game Over!");
-                }
             }
+        } else {
+            showGameOver();
         }
     });
 
@@ -159,6 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize the game
     function init() {
         resetGame();
+        newGameButton.addEventListener('click', resetGame);
     }
 
     // Start the game
